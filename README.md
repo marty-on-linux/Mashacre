@@ -1,5 +1,7 @@
 # Mashacre
 
+![Mashacre Logo](logo.png)
+
 🎮 **About This Game**
 Mashacre is a Vampire Survivors-style project that started as an AI-built prototype from a YouTube coding battle. I’m now recoding and expanding it by hand. The original video is by PromptPotatoGames, and the first AI-made version lives on itch: https://promptpotatogames.itch.io/
 
