@@ -1,7 +1,7 @@
 # Mashacre
 
 🎮 **About This Game**
-The Mashacre is the chaotic result of a YouTube coding battle: “ChatGPT vs Gemini: Make Vampire Survivors From Scratch (Potato Edition).” Gemini won the battle, so the time limit was removed and the AI was forced to keep building until a fully playable, starch-filled bullet heaven emerged.
+Mashacre is a Vampire Survivors-style project that started as an AI-built prototype from a YouTube coding battle. I’m now recoding and expanding it by hand. The original video is by PromptPotatoGames, and the first AI-made version lives on itch: https://promptpotatogames.itch.io/
 
 🏁 **Quick Start**
 - Click **Code → Download ZIP**, extract, then double-click [index.html](index.html) to play in a modern browser.
