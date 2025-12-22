@@ -1,8 +1,12 @@
 # Mashacre
 
 🎮 **About This Game**
-
 The Mashacre is the chaotic result of a YouTube coding battle: “ChatGPT vs Gemini: Make Vampire Survivors From Scratch (Potato Edition).” Gemini won the battle, so the time limit was removed and the AI was forced to keep building until a fully playable, starch-filled bullet heaven emerged.
+
+🏁 **Quick Start**
+- Click **Code → Download ZIP**, extract, then double-click [index.html](index.html) to play in a modern browser.
+- If your browser blocks local files, run from the project folder: `python -m http.server 8000` and open http://localhost:8000
+- Pure HTML/JS/CSS—no build step or extra dependencies.
 
 🏆 **The Recipe for Victory**
 1. Mow down hordes of Rotten Potato enemies.
@@ -21,15 +25,16 @@ The Mashacre is the chaotic result of a YouTube coding battle: “ChatGPT vs Gem
 🧰 **What’s Inside**
 - Potato-themed bullet heaven with evolving weapons, bosses, and spatula quests.
 - Optimized level-up UI, potato-toned HUD, and performance-focused rendering.
-- Fully client-side (HTML/JS/CSS); runs in browser.
+- Fully client-side (HTML/JS/CSS); runs in-browser.
+
+📂 **Project Layout**
+- [index.html](index.html) — entry point wiring scripts/styles
+- `css/` — styles (HUD, spatula/chest UI, ending)
+- `js/` — game code (core loop, entities, weapons, UI, managers, systems, debug tools)
 
 🙏 **Credits**
-- Original creator & channel: **PromptPotatoGames** — check out weekly AI-vs-AI builds and updates: https://www.youtube.com/@ThePromptPotato
+- Original creator & channel: **PromptPotatoGames** — weekly AI-vs-AI builds and updates: https://www.youtube.com/@ThePromptPotato
 - Current maintainer: continuing weekly improvements and polish.
-
-🚀 **How to Run Locally**
-1. Clone/download this repo.
-2. Open `index.html` in a modern browser (or serve via a simple HTTP server).
 
 🌐 **Planned Weekly Improvements**
 - More potato cosmetics and VFX passes without hurting performance.
