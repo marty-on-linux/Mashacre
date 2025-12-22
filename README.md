@@ -19,9 +19,6 @@ Mashacre is a Vampire Survivors-style project that started as an AI-built protot
 - **Left Click** — Select upgrades
 - **Esc** — Pause / Settings (Volume)
 
-🕹️ **Cheats / Debug**
-- **`** (tilde): Opens the Cheats/Debug Menu (invincibility, force spawns, level skips). Use at your own risk—spawning 1,000 bosses may crash everything.
-
 🧰 **What’s Inside**
 - Potato-themed bullet heaven with evolving weapons, bosses, and spatula quests.
 - Optimized level-up UI, potato-toned HUD, and performance-focused rendering.
