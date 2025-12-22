@@ -40,11 +40,12 @@
     font-size: 150px;
     animation: bounce 2s infinite ease-in-out;
 }
-.dev-headset {
+.dev-fedora {
     position: absolute;
-    top: -20px;
-    left: 10px;
-    font-size: 100px;
+    top: -60px; /* Above head */
+    left: 0px;
+    font-size: 90px;
+    transform: rotate(-5deg);
 }
 .dev-body {
     position: absolute;

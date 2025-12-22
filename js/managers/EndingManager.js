@@ -86,12 +86,12 @@ class EndingManager {
         const overlay = document.createElement('div');
         overlay.id = 'desk-overlay';
 
-        // Potato Dev
+        // Main Potato Character with Fedora (cartoony)
         const potatoDev = document.createElement('div');
         potatoDev.id = 'potato-dev';
         potatoDev.innerHTML = `
             <div class="dev-head">🥔</div>
-            <div class="dev-headset">🎧</div>
+            <div class="dev-fedora">🎩</div>
             <div class="dev-body">👕</div>
         `;
 
@@ -123,9 +123,8 @@ class EndingManager {
     static async playDialogue() {
         const lines = [
             { text: "> BOSS_DEFEATED.LOG SAVED.", sender: "System", cls: "sys-text" },
-            { text: "> UPLOADING_YOUTUBE_VIDEO.MP4...", sender: "System", cls: "sys-text" },
-            { text: "Okay, I think that's enough coding for today.", sender: "Potato Dev", cls: "dev-text" },
-            { text: "> EXECUTE: THANK_YOU_FOR_SUBSCRIBING.EXE", sender: "System", cls: "sys-text" }
+            { text: "> ARCHIVING RUN DATA...", sender: "System", cls: "sys-text" },
+            { text: "Alright, time to rest these mashers.", sender: "Potato", cls: "dev-text" }
         ];
 
         const box = document.getElementById('ending-dialogue');
@@ -136,7 +135,7 @@ class EndingManager {
             await new Promise(r => setTimeout(r, 1000)); // Pause between lines
         }
 
-        this.showSubscribeButton();
+        // End: No subscribe button anymore
     }
 
     static typewrite(text, element) {
@@ -155,14 +154,5 @@ class EndingManager {
         });
     }
 
-    static showSubscribeButton() {
-        const btn = document.createElement('button');
-        btn.id = 'subscribe-btn';
-        btn.innerText = "Thank You For Subscribing";
-        btn.onclick = () => {
-            alert("Thanks for playing!");
-            location.reload();
-        };
-        document.body.appendChild(btn);
-    }
+    static showSubscribeButton() { /* removed */ }
 }

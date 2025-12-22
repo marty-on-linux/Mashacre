@@ -114,6 +114,9 @@ class WeaponSquash {
                 e.applySlow(180);    // 3 Seconds
 
                 let baseDmg = 50 * Math.pow(1.4, this.level);
+                if (!isEvo && this.level === CONSTANTS.MAX_WEAPON_LEVEL) {
+                    baseDmg *= 0.88; // ~12% reduction
+                }
                 if (isEvo) baseDmg *= 2;
                 const dmg = baseDmg * this.player.stats.dmgMult;
 

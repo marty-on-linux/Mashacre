@@ -53,6 +53,10 @@ class WeaponKetchup {
         };
 
         let dmg = 20 * Math.pow(1.5, this.level);
+        // Slight nerf at max level (pre-evo)
+        if (!isEvo && this.level === CONSTANTS.MAX_WEAPON_LEVEL) {
+            dmg *= 0.88; // ~12% reduction
+        }
         if (isEvo) dmg *= 2;
         dmg *= this.player.stats.dmgMult;
 

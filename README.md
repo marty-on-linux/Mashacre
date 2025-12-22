@@ -21,11 +21,6 @@ Mashacre is a Vampire Survivors-style project that started as an AI-built protot
 - **Left Click** — Select upgrades
 - **Esc** — Pause / Settings (Volume)
 
-🧰 **What’s Inside**
-- Potato-themed bullet heaven with evolving weapons, bosses, and spatula quests.
-- Optimized level-up UI, potato-toned HUD, and performance-focused rendering.
-- Fully client-side (HTML/JS/CSS); runs in-browser.
-
 📂 **Project Layout**
 - [index.html](index.html) — entry point wiring scripts/styles
 - `css/` — styles (HUD, spatula/chest UI, ending)
@@ -35,10 +30,20 @@ Mashacre is a Vampire Survivors-style project that started as an AI-built protot
 - Original creator & channel: **PromptPotatoGames** — weekly AI-vs-AI builds and updates: https://www.youtube.com/@ThePromptPotato
 - Current maintainer: continuing weekly improvements and polish.
 
+✨ **Latest Changes**
+- Ending screen now shows the main potato wearing a fedora (cartoony/homemade style).
+- Removed the subscribe message/button and cleaned up stray accessories (e.g., headphones).
+- Small balance nerfs at the final level of custom weapons to keep late-game fun without being invincible.
+
 🌐 **Planned Weekly Improvements**
 - More potato cosmetics and VFX passes without hurting performance.
 - Balance tweaks for bosses and weapons.
 - Additional UI polish while keeping the potato aesthetic.
+
+🔭 **Future Updates**
+- More end scenario variations and celebratory effects.
+- Accessory system cleanup and optional toggles.
+- Additional weapon evolutions with clearer trade-offs.
 
 📢 **Share & Feedback**
 If you find bugs (e.g., bosses resisting the Masher), open an issue or drop feedback. Enjoy the starch!

@@ -85,6 +85,9 @@ class TaterTot {
 
         // Damage
         let dmg = 40 * Math.pow(1.4, this.level);
+        if (!this.isEvo && this.level === CONSTANTS.MAX_WEAPON_LEVEL) {
+            dmg *= 0.9; // ~10% reduction
+        }
         if (this.isEvo) dmg *= 2;
         if (this.player && this.player.stats) {
             dmg *= this.player.stats.dmgMult;

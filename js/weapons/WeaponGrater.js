@@ -44,6 +44,9 @@ class WeaponGrater {
         const spreadArc = Math.PI / 4;
 
         let baseDmg = 12 * Math.pow(1.2, this.level);
+        if (!isEvo && this.level === CONSTANTS.MAX_WEAPON_LEVEL) {
+            baseDmg *= 0.9; // ~10% reduction
+        }
         if (isEvo) baseDmg *= 2.25; // Buffed from 1.5 (+50% more)
         const dmg = baseDmg * this.player.stats.dmgMult;
 
