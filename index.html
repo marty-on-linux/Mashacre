@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mashacre</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chest_ui.css">
+    <link rel="stylesheet" href="css/spatula_ui.css">
+</head>
+
+<body>
+
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+    <div id="danger-overlay"></div>
+
+    <!-- UI Overlay -->
+    <div id="ui-layer">
+        <div id="hud-top-left">
+            <div class="bar-container">
+                <div class="bar-text">HP <span id="hp-text">150/150</span></div>
+                <div class="bar-fill" id="hp-fill"></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-text">LVL <span id="level-num">1</span></div>
+                <div class="bar-fill" id="xp-fill"></div>
+            </div>
+        </div>
+
+        <!-- Boss Bar -->
+        <div id="boss-bar-container">
+            <div id="boss-text">THE CHEF</div>
+            <div class="bar-fill" id="boss-fill"></div>
+        </div>
+
+        <div class="stat-box">
+            <div>
+                Time: <span id="timer">00:00</span> | Kills: <span id="kill-count">0</span>
+            </div>
+            <button id="pause-btn" onclick="togglePause()">PAUSE (ESC)</button>
+        </div>
+    </div>
+
+    <!-- Start Overlay -->
+    <div id="start-overlay" class="modal" style="display: flex;">
+        <div id="bg-particles"></div>
+        <div class="title-wrapper" style="text-align:center;">
+            <h1>THE MASHACRE</h1>
+            <p style="color: #ffaa00; font-size: 1.5rem; margin-top: 10px; letter-spacing: 2px;">SURVIVE THE FRYER</p>
+        </div>
+        <div style="color: #ccc; text-align:center; margin: 40px 0; font-size: 1.2rem;">
+            <p>WASD to Move</p>
+            <p>Defeat the Chef. Become the Ultimate Potato.</p>
+        </div>
+        <button class="restart-btn" onclick="startGame()" onmouseenter="sfx && sfx.playHover()">ENTER THE FRYER</button>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="modal">
+        <h1 style="color:white; font-size:4rem;">PAUSED</h1>
+        <button class="menu-btn" onclick="togglePause()" onmouseenter="sfx.playHover()">RESUME</button>
+        <button class="menu-btn"
+            style="background: linear-gradient(to bottom, #555, #333); border-color:#888; box-shadow: 0 10px 0 #222;"
+            onclick="location.reload()" onmouseenter="sfx.playHover()">QUIT</button>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div id="level-up-modal" class="modal">
+        <div class="sunburst"></div>
+        <div id="fryer-basket">🍟</div>
+        <h1>LEVEL UP!</h1>
+        <div class="card-container" id="upgrade-cards"></div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="modal">
+        <h1 style="color: #ff0044; font-size: 5rem; text-shadow: 0 0 30px red;">MASHED POTATO</h1>
+        <h2 id="final-stats" style="color: white;">You survived for 00:00</h2>
+        <button class="restart-btn" onclick="location.reload()" onmouseenter="sfx.playHover()">RE-FRY (RESTART)</button>
+    </div>
+
+    <!-- Win Screen -->
+    <div id="win-screen" class="modal">
+        <h1>YOU WON!</h1>
+        <h2 style="color: #ffcc00; margin: 20px;">The Mash King has been defeated!</h2>
+        <h3 id="win-stats" style="color: white;"></h3>
+        <button class="restart-btn" onclick="location.reload()" onmouseenter="sfx.playHover()">PLAY AGAIN</button>
+    </div>
+
+    <script src="js/core/setup.js"></script>
+    <script src="js/systems/Particles.js"></script>
+    <script src="js/systems/Pickups.js"></script>
+    <script src="js/weapons/OilPool.js"></script>
+    <script src="js/entities/Enemy.js"></script>
+    <script src="js/weapons/Weapons.js"></script>
+    <script src="js/weapons/WeaponSquash.js"></script>
+    <script src="js/weapons/WeaponKetchup.js"></script>
+    <script src="js/weapons/WeaponTots.js"></script>
+    <script src="js/weapons/WeaponGrater.js"></script>
+    <script src="js/entities/Boss.js"></script>
+    <script src="js/entities/MashKing.js"></script>
+    <script src="js/entities/BakedPotato.js"></script>
+    <script src="js/ui/TreasureChest.js"></script>
+
+    <script src="js/entities/Player.js"></script>
+    <script src="js/managers/Formations.js"></script>
+    <script src="js/core/Input.js"></script>
+    <script src="js/ui/UIManager.js"></script>
+    <script src="js/ui/SettingsMenu.js"></script>
+    <script src="js/managers/GemManager.js"></script>
+    <script src="js/core/main.js"></script>
+    <script src="js/managers/Hotfixes.js"></script>
+    <script src="js/ui/ChestUI.js"></script>
+    <script src="js/systems/AudioOptimizer.js"></script>
+    <link rel="stylesheet" href="css/style_ending.css">
+    <script src="js/ui/SpatulaUI.js"></script>
+    <script src="js/managers/WaveManager.js"></script>
+    <script src="js/managers/EndingManager.js"></script>
+    <script src="js/debug/DebugMode.js"></script>
+    <script src="js/debug/DebugWeaponTools.js"></script>
+</body>
+
+</html>

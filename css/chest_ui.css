@@ -1,0 +1,366 @@
+/* Casino Chest UI - Jackpot Style */
+
+/* The Modal Overlay */
+#chest-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    /* Even darker for emphasis */
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1000px;
+    /* For 3D effects */
+}
+
+/* Background Rays/Lights */
+#chest-bg-lights {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250vmax;
+    height: 250vmax;
+    background: repeating-conic-gradient(from 0deg,
+            rgba(255, 215, 0, 0.15) 0deg 10deg,
+            transparent 10deg 20deg);
+    transform: translate(-50%, -50%);
+    animation: spinLights 10s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+@keyframes spinLights {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Screen Flash for Reveal */
+#chest-flash-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 2100;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.flash-bang {
+    animation: flashAnim 0.8s ease-out forwards;
+}
+
+@keyframes flashAnim {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* The Chest Itself (Phase A) */
+#chest-center-icon {
+    font-size: 8rem;
+    z-index: 15;
+    margin-bottom: 50px;
+    filter: drop-shadow(0 0 20px gold);
+    display: block;
+    /* Toggled via JS */
+}
+
+.shake-violent {
+    animation: shakeHard 0.1s infinite;
+}
+
+@keyframes shakeHard {
+    0% {
+        transform: translate(2px, 2px) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(-2px, -2px) rotate(-2deg);
+    }
+
+    50% {
+        transform: translate(2px, -2px) rotate(2deg);
+    }
+
+    75% {
+        transform: translate(-2px, 2px) rotate(-2deg);
+    }
+
+    100% {
+        transform: translate(2px, 2px) rotate(0deg);
+    }
+}
+
+/* The Chest Container in the Center */
+#chest-display-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Title that SLAMS down */
+#chest-title {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #FFD700;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff8800;
+    margin-bottom: 30px;
+    font-family: 'Arial Black', Arial, sans-serif;
+    text-transform: uppercase;
+    transform: scale(0);
+    /* Start hidden/small */
+    opacity: 0;
+}
+
+#chest-title.slam {
+    opacity: 1;
+    animation: sealSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes sealSlam {
+    0% {
+        transform: scale(3);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* The Loot Cards Row */
+#chest-loot-row {
+    display: flex;
+    gap: 20px;
+    perspective: 1000px;
+    margin: 20px 0;
+    min-height: 350px;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+/* Animation for Cards Appearance */
+.casino-card {
+    width: 220px;
+    height: 320px;
+    background: linear-gradient(135deg, #111, #000);
+    border: 4px solid #444;
+    /* Default inactive */
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px black;
+    opacity: 0;
+    /* Hidden init */
+    transform: scale(0.8);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.casino-card.active {
+    opacity: 1;
+    transform: scale(1);
+    border-color: #FFD700;
+    box-shadow: 0 0 20px #FFD700;
+}
+
+.casino-card.revealed {
+    border-color: #00ffff;
+    /* Rare default */
+    box-shadow: 0 0 30px #00ffff;
+    animation: cardPulse 2s infinite alternate;
+}
+
+.casino-card.legendary {
+    border-color: #ff00aa !important;
+    box-shadow: 0 0 50px #ff00aa !important;
+}
+
+@keyframes cardPulse {
+    from {
+        transform: scale(1);
+        box-shadow: 0 0 30px #00ffff;
+    }
+
+    to {
+        transform: scale(1.05);
+        box-shadow: 0 0 50px #00ffff;
+    }
+}
+
+/* Sparkle overlay on cards */
+.casino-card::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: rotate(45deg);
+    animation: shineCard 2s infinite;
+    opacity: 0.5;
+}
+
+@keyframes shineCard {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+/* Card Content */
+.casino-card .icon {
+    font-size: 5rem;
+    margin: 15px 0;
+}
+
+.casino-card .type {
+    font-size: 0.9rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.casino-card .title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #FFD700;
+    margin: 5px 0;
+}
+
+.casino-card .desc {
+    font-size: 0.85rem;
+    color: #ddd;
+    line-height: 1.3;
+}
+
+/* Claim Button */
+#chest-claim-btn {
+    margin-top: 40px;
+    padding: 20px 60px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(to bottom, #ff4400, #dd0000);
+    border: 4px solid #ffcc00;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #880000, 0 0 30px #ff4400;
+    transition: all 0.1s;
+    z-index: 30;
+    text-transform: uppercase;
+    animation: pulseButton 1s infinite alternate;
+    opacity: 0;
+    /* Hidden init */
+    transform: translateY(50px);
+}
+
+#chest-claim-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+@keyframes pulseButton {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.05);
+    }
+}
+
+#chest-claim-btn:active {
+    transform: translateY(10px) scale(0.95);
+    box-shadow: 0 0 0 #880000, 0 0 10px #ff4400;
+}
+
+#chest-claim-btn:hover {
+    filter: brightness(1.2);
+}
+
+/* Particles & Confetti */
+.confetti {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: gold;
+    animation: confettiFall 3s linear forwards;
+    z-index: 100;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: fireworkPop 1s ease-out forwards;
+    box-shadow: 0 0 10px currentColor;
+    /* Glow */
+    z-index: 99;
+}
+
+@keyframes fireworkPop {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
