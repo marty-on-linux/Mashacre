@@ -269,9 +269,9 @@ function loop(timestamp) {
     }
 
     // --- Performance Caps (using length assignment is faster than splice) ---
-    if (particles.length > 200) particles.length = 200;
-    if (splats.length > 250) splats.length = 250; // Lower cap for a cleaner playfield
-    if (damageNumbers.length > 60) damageNumbers.length = 60;
+    if (particles.length > 150) particles.length = 150;
+    if (splats.length > 200) splats.length = 200;
+    if (damageNumbers.length > 50) damageNumbers.length = 50;
 
     // Update Mouse World Position (Logic maintained but using global mouse from Input.js)
     if (mouse) {
@@ -284,8 +284,8 @@ function loop(timestamp) {
     camera.x += (player.x - camera.x) * 0.1;
     camera.y += (player.y - camera.y) * 0.1;
 
-    if (camera.shake > 0) camera.shake *= 0.9;
-    if (camera.shake < 0.5) camera.shake = 0;
+    if (camera.shake > 0) camera.shake *= 0.88;
+    if (camera.shake < 0.3) camera.shake = 0;
 
     // Use reverse iteration to safely remove items during update
     for (let i = projectiles.length - 1; i >= 0; i--) {

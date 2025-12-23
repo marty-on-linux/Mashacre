@@ -62,7 +62,7 @@ class Enemy {
 
     update() {
         this.x += this.knockbackX; this.y += this.knockbackY;
-        this.knockbackX *= 0.9; this.knockbackY *= 0.9; // Physics: Increased decay
+        this.knockbackX *= 0.85; this.knockbackY *= 0.85; // Smoother knockback recovery
 
         // Safety check for player
         if (!player) return;
@@ -229,56 +229,82 @@ class Enemy {
             ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill();
         } else {
             if (this.type === 'rotten') {
-                ctx.fillStyle = this.isElite ? '#4a3b52' : '#556b2f';
-                ctx.strokeStyle = this.isElite ? '#222' : '#3a4a20';
+                // Lumpy rotten potato body
+                ctx.fillStyle = this.isElite ? '#4a3b52' : '#5a6b3f';
+                ctx.strokeStyle = this.isElite ? '#2a1b32' : '#3a4a20';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 const s = this.size;
                 ctx.moveTo(0, -s);
-                ctx.bezierCurveTo(s, -s, s + 5, 0, s, s);
-                ctx.bezierCurveTo(0, s + 5, -s, s, -s, s);
-                ctx.bezierCurveTo(-s - 5, 0, -s, -s, 0, -s);
+                ctx.bezierCurveTo(s * 0.8, -s * 0.9, s + 3, -s * 0.3, s, 0);
+                ctx.bezierCurveTo(s + 2, s * 0.5, s * 0.6, s, 0, s);
+                ctx.bezierCurveTo(-s * 0.7, s * 0.9, -s - 2, s * 0.3, -s, 0);
+                ctx.bezierCurveTo(-s - 3, -s * 0.4, -s * 0.8, -s, 0, -s);
                 ctx.fill(); ctx.stroke();
-                ctx.fillStyle = this.isElite ? '#ff00ff' : 'red';
+
+                // Rot spots
+                ctx.fillStyle = this.isElite ? '#2a1b32' : '#3a4a20';
+                ctx.beginPath(); ctx.arc(-4, 5, 3, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(6, 2, 2, 0, Math.PI * 2); ctx.fill();
+
+                // Angry eyes
+                ctx.fillStyle = this.isElite ? '#ff00ff' : '#cc2222';
                 ctx.beginPath(); ctx.arc(-5, -3, 3, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(5, -3, 3, 0, Math.PI * 2); ctx.fill();
+
+                // Eye shine
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath(); ctx.arc(-4, -4, 1.2, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(6, -4, 1.2, 0, Math.PI * 2); ctx.fill();
             } else if (this.type === 'fry') {
                 ctx.rotate(Math.atan2(player.y - this.y, player.x - this.x));
 
-                // VISUAL UPDATE: Bigger, Menacing Fry
-                // Draw uneven fry body
-                ctx.fillStyle = this.isElite ? '#cc5500' : '#ffda44'; // Gold/Crispy
-                ctx.strokeStyle = '#d4aa00';
-                ctx.lineWidth = 1;
+                // Crispy angry fry with potato charm
+                const len = this.size * 1.6;
+                const wid = this.size * 0.5;
 
-                // Random-ish Fry Shape
+                // Crispy golden body with uneven edges
+                ctx.fillStyle = this.isElite ? '#cc5500' : '#f5c542';
+                ctx.strokeStyle = this.isElite ? '#8b3a00' : '#c9a227';
+                ctx.lineWidth = 2;
+
                 ctx.beginPath();
-                const len = this.size * 1.5;
-                const wid = this.size * 0.6;
-                ctx.rect(-wid, -len / 2, wid * 2, len);
+                ctx.moveTo(-wid, -len / 2);
+                ctx.lineTo(-wid - 2, 0);
+                ctx.lineTo(-wid, len / 2);
+                ctx.lineTo(wid, len / 2 - 1);
+                ctx.lineTo(wid + 1, 0);
+                ctx.lineTo(wid, -len / 2 + 1);
+                ctx.closePath();
                 ctx.fill(); ctx.stroke();
 
-                // Salt Grains
+                // Crispy spots (burnt bits)
+                ctx.fillStyle = '#b8860b';
+                ctx.beginPath(); ctx.arc(-2, -3, 2, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(2, 4, 1.5, 0, Math.PI * 2); ctx.fill();
+
+                // Salt grains
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillRect(-3, -6, 2, 2);
+                ctx.fillRect(2, 1, 2, 2);
+
+                // Angry eyes
+                ctx.fillStyle = this.isElite ? '#ff0000' : '#8b0000';
+                ctx.beginPath(); ctx.arc(-3, -2, 2.5, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(3, -2, 2.5, 0, Math.PI * 2); ctx.fill();
+
+                // Eye shine
                 ctx.fillStyle = 'white';
-                ctx.fillRect(-2, -5, 2, 2);
-                ctx.fillRect(3, 2, 2, 2);
+                ctx.beginPath(); ctx.arc(-2, -3, 1, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(4, -3, 1, 0, Math.PI * 2); ctx.fill();
 
-                // Face (Menacing)
-                // Eyes
-                ctx.fillStyle = 'red';
-                ctx.beginPath(); ctx.arc(-4, -4, 2, 0, Math.PI * 2); ctx.fill();
-                ctx.beginPath(); ctx.arc(4, -4, 2, 0, Math.PI * 2); ctx.fill();
-
-                // Brows
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1.5;
+                // Angry brows
+                ctx.strokeStyle = '#4a2800';
+                ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(-7, -7); ctx.lineTo(-2, -5); // Angled down
-                ctx.moveTo(7, -7); ctx.lineTo(2, -5);
+                ctx.moveTo(-6, -6); ctx.lineTo(-1, -4);
+                ctx.moveTo(6, -6); ctx.lineTo(1, -4);
                 ctx.stroke();
-
-                // Mouth
-                ctx.beginPath(); ctx.moveTo(-3, 2); ctx.lineTo(3, 2); ctx.stroke();
             }
         }
         ctx.restore();

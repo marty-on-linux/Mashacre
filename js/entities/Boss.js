@@ -80,13 +80,31 @@ class Boss extends Enemy {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Body
-        ctx.fillStyle = this.isKing ? '#8b4513' : '#ffcccc'; // King is a giant potato
-        ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill();
-        ctx.lineWidth = 4; ctx.strokeStyle = '#aa6666'; ctx.stroke();
+        // Shadow under boss
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.beginPath();
+        ctx.ellipse(0, this.size * 0.8, this.size * 0.9, this.size * 0.3, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Body - big angry potato/chef
+        const bodyColor = this.isKing ? '#8b5a30' : '#ffcccc';
+        ctx.fillStyle = bodyColor;
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = this.isKing ? '#5a3a10' : '#aa6666';
+        ctx.stroke();
+
+        // Potato texture spots (King only)
+        if (this.isKing) {
+            ctx.fillStyle = '#6a4520';
+            ctx.beginPath(); ctx.arc(-30, 20, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(25, -15, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(10, 35, 5, 0, Math.PI * 2); ctx.fill();
+        }
 
         // Face
-        // 3rd Chef (bossKills >= 2) gets Red Eyes
         const isSuperAngry = (bossKills >= 2);
 
         ctx.fillStyle = isSuperAngry ? '#cc0000' : 'black';
@@ -123,28 +141,48 @@ class Boss extends Enemy {
             ctx.stroke();
         }
 
-        // Crown for King
+        // Crown for King - Golden potato crown
         if (this.isKing) {
-            ctx.fillStyle = 'gold';
-            ctx.beginPath();
-            ctx.moveTo(-40, -this.size + 20);
-            ctx.lineTo(-20, -this.size - 40);
-            ctx.lineTo(0, -this.size + 10);
-            ctx.lineTo(20, -this.size - 40);
-            ctx.lineTo(40, -this.size + 20);
-            ctx.fill();
-        } else {
-            // Chef Hat
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = '#ccc';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'gold';
+            ctx.fillStyle = '#ffd700';
+            ctx.strokeStyle = '#daa520';
             ctx.lineWidth = 3;
-            ctx.fillRect(-40, -this.size - 40, 80, 60);
-            ctx.strokeRect(-40, -this.size - 40, 80, 60);
             ctx.beginPath();
-            ctx.arc(-40, -this.size - 40, 20, Math.PI, 1.5 * Math.PI);
-            ctx.arc(0, -this.size - 60, 25, Math.PI, 2 * Math.PI);
-            ctx.arc(40, -this.size - 40, 20, 1.5 * Math.PI, 0);
-            ctx.fill(); ctx.stroke();
+            ctx.moveTo(-45, -this.size + 25);
+            ctx.lineTo(-30, -this.size - 35);
+            ctx.lineTo(-15, -this.size + 5);
+            ctx.lineTo(0, -this.size - 45);
+            ctx.lineTo(15, -this.size + 5);
+            ctx.lineTo(30, -this.size - 35);
+            ctx.lineTo(45, -this.size + 25);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            // Crown jewels
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ff3333';
+            ctx.beginPath(); ctx.arc(0, -this.size - 25, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#3366ff';
+            ctx.beginPath(); ctx.arc(-22, -this.size - 5, 4, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(22, -this.size - 5, 4, 0, Math.PI * 2); ctx.fill();
+        } else {
+            // Chef Hat - puffy and cartoony
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#dddddd';
+            ctx.lineWidth = 2;
+            // Hat base
+            ctx.fillRect(-45, -this.size - 30, 90, 45);
+            ctx.strokeRect(-45, -this.size - 30, 90, 45);
+            // Puffy top
+            ctx.beginPath();
+            ctx.arc(-35, -this.size - 30, 22, Math.PI, 1.5 * Math.PI);
+            ctx.arc(-10, -this.size - 55, 20, Math.PI * 1.2, Math.PI * 1.9);
+            ctx.arc(15, -this.size - 55, 20, Math.PI * 1.1, Math.PI * 1.8);
+            ctx.arc(35, -this.size - 30, 22, 1.5 * Math.PI, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
         }
 
         // Visual Flash Overlay (Fixes glitchy hat removal)

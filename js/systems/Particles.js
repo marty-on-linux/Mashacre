@@ -3,16 +3,17 @@
 class Splat {
     constructor(x, y) {
         this.x = x; this.y = y;
-        this.scale = 0.35 + Math.random() * 0.4; // Smaller to reduce visual clutter
+        this.scale = 0.3 + Math.random() * 0.35;
         this.rotation = Math.random() * Math.PI * 2;
         this.points = [];
-        this.life = 900; // ~15s at 60fps
+        this.life = 720; // ~12s at 60fps
         this.maxLife = this.life;
 
-        // Warm potato palette (skin + mashed tones)
-        const palette = ['#c99c5a', '#b47b3d', '#d3b070'];
+        // Warm mashed potato palette
+        const palette = ['#c9985a', '#b08040', '#d4b070', '#c4a060'];
         this.baseColor = palette[Math.floor(Math.random() * palette.length)];
-        for (let i = 0; i < 8; i++) this.points.push(8 + Math.random() * 10);
+        // More organic splat shape
+        for (let i = 0; i < 10; i++) this.points.push(6 + Math.random() * 12);
     }
 
     update() {
@@ -22,7 +23,7 @@ class Splat {
 
     draw(ctx) {
         const t = this.life / this.maxLife;
-        const alpha = 0.15 + t * 0.45; // Fades out smoothly
+        const alpha = 0.12 + t * 0.38;
 
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -30,25 +31,27 @@ class Splat {
         ctx.scale(this.scale, this.scale);
         ctx.globalAlpha = alpha;
 
-        // Soft potato splat
+        // Main splat body
         ctx.fillStyle = this.baseColor;
         ctx.beginPath();
         ctx.moveTo(this.points[0], 0);
-        for (let i = 1; i < 8; i++) {
-            const angle = (i / 8) * Math.PI * 2;
-            ctx.lineTo(Math.cos(angle) * this.points[i], Math.sin(angle) * this.points[i]);
+        for (let i = 1; i < this.points.length; i++) {
+            const angle = (i / this.points.length) * Math.PI * 2;
+            const r = this.points[i];
+            const nextAngle = ((i + 1) / this.points.length) * Math.PI * 2;
+            const nextR = this.points[(i + 1) % this.points.length];
+            const cx = Math.cos((angle + nextAngle) / 2) * (r + nextR) / 2 * 0.8;
+            const cy = Math.sin((angle + nextAngle) / 2) * (r + nextR) / 2 * 0.8;
+            ctx.quadraticCurveTo(cx, cy, Math.cos(nextAngle) * nextR, Math.sin(nextAngle) * nextR);
         }
         ctx.fill();
 
-        // Skin speckles for texture
-        ctx.fillStyle = '#8a5a2d';
-        for (let i = 0; i < 4; i++) {
-            const a = Math.random() * Math.PI * 2;
-            const r = 4 + Math.random() * 6;
-            ctx.beginPath();
-            ctx.arc(Math.cos(a) * r, Math.sin(a) * r, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-        }
+        // Inner lighter spot (mashed potato center)
+        ctx.fillStyle = '#e0c890';
+        ctx.globalAlpha = alpha * 0.6;
+        ctx.beginPath();
+        ctx.arc(0, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
 
         ctx.restore();
         ctx.globalAlpha = 1;
