@@ -372,82 +372,46 @@ class Player {
             ctx.stroke();
         }
 
-        // Player Sprite - Main Potato Hero
+        // Player Sprite - Original Potato
         const tilt = (this.wobble > 0) ? Math.sin(this.wobble) * 0.1 : 0;
         ctx.rotate(tilt);
 
-        // Legs (stubby potato legs)
+        // Legs
         const legOffset = Math.sin(this.wobble) * 5;
-        ctx.fillStyle = '#8b5a2b';
-        ctx.strokeStyle = '#6b3a1b'; ctx.lineWidth = 2;
-        // Left leg
+        ctx.strokeStyle = '#8b4513'; ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.ellipse(-10, 22 + legOffset, 6, 10, 0, 0, Math.PI * 2);
-        ctx.fill(); ctx.stroke();
-        // Right leg
-        ctx.beginPath();
-        ctx.ellipse(10, 22 - legOffset, 6, 10, 0, 0, Math.PI * 2);
-        ctx.fill(); ctx.stroke();
+        ctx.moveTo(-10, 15); ctx.lineTo(-10, 25 + legOffset);
+        ctx.moveTo(10, 15); ctx.lineTo(10, 25 - legOffset);
+        ctx.stroke();
 
-        // Body - lumpy potato shape
-        ctx.fillStyle = this.color;
-        ctx.strokeStyle = '#9a7856';
-        ctx.lineWidth = 3;
+        // Body
+        ctx.fillStyle = this.color; ctx.strokeStyle = '#aa8866'; ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(0, -28);
-        ctx.bezierCurveTo(22, -26, 28, -8, 24, 8);
-        ctx.bezierCurveTo(22, 22, 8, 26, 0, 26);
-        ctx.bezierCurveTo(-10, 26, -22, 20, -24, 8);
-        ctx.bezierCurveTo(-28, -10, -22, -26, 0, -28);
+        ctx.moveTo(0, -25);
+        ctx.bezierCurveTo(25, -25, 30, 0, 20, 20);
+        ctx.bezierCurveTo(10, 30, -10, 30, -20, 20);
+        ctx.bezierCurveTo(-30, 0, -25, -25, 0, -25);
         ctx.fill(); ctx.stroke();
-
-        // Potato skin spots
-        ctx.fillStyle = '#b89868';
-        ctx.beginPath(); ctx.arc(-12, 5, 4, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(8, 12, 3, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(15, -5, 2.5, 0, Math.PI * 2); ctx.fill();
 
         // Face
         ctx.scale(this.facing, 1);
-        
-        // Eyes - big expressive potato eyes
         ctx.fillStyle = 'white';
-        ctx.beginPath(); ctx.ellipse(-4, -8, 7, 8, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(10, -8, 7, 8, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = '#886644'; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.ellipse(-4, -8, 7, 8, 0, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(10, -8, 7, 8, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(8, -5, 5, 0, Math.PI * 2); ctx.arc(-2, -5, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'black';
+        ctx.beginPath(); ctx.arc(9, -5, 2, 0, Math.PI * 2); ctx.arc(-1, -5, 2, 0, Math.PI * 2); ctx.fill();
 
-        // Pupils
-        ctx.fillStyle = '#222';
-        ctx.beginPath(); ctx.arc(-3, -7, 3, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(11, -7, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = 'black'; ctx.lineWidth = 2;
 
-        // Eye shine
-        ctx.fillStyle = 'white';
-        ctx.beginPath(); ctx.arc(-1, -9, 1.5, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(13, -9, 1.5, 0, Math.PI * 2); ctx.fill();
-
-        ctx.strokeStyle = '#5a3a1a'; ctx.lineWidth = 2;
-
-        // VISUAL UPGRADE: Scared Face if HP < 20%
+        // Scared face if HP < 20%
         if (this.hp < this.maxHp * 0.2) {
-            // Worried mouth
-            ctx.beginPath();
-            ctx.arc(3, 5, 6, 0.2 * Math.PI, 0.8 * Math.PI);
-            ctx.stroke();
-            // Sweat drops
-            ctx.fillStyle = '#88ccff';
-            ctx.beginPath();
-            ctx.moveTo(18, -18);
-            ctx.quadraticCurveTo(20, -14, 18, -10);
-            ctx.quadraticCurveTo(16, -14, 18, -18);
-            ctx.fill();
+            // Mouth open
+            ctx.beginPath(); ctx.arc(3, 8, 4, 0, Math.PI * 2); ctx.stroke();
+            // Sweat drop
+            ctx.fillStyle = '#ccffff';
+            ctx.beginPath(); ctx.arc(15, -15, 3, 0, Math.PI * 2); ctx.fill();
         } else {
-            // Happy determined smile
-            ctx.beginPath();
-            ctx.arc(3, 2, 8, 0.1 * Math.PI, 0.9 * Math.PI);
-            ctx.stroke();
+            // Normal expression lines
+            ctx.beginPath(); ctx.moveTo(4, -10); ctx.lineTo(12, -8); ctx.moveTo(-6, -10); ctx.lineTo(2, -8); ctx.stroke();
         }
 
         ctx.scale(1 / this.facing, 1);
