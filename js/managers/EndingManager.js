@@ -66,93 +66,60 @@ class EndingManager {
         console.log("EndingManager: Starting Sequence");
 
         // 1. Freeze Game
-        isPaused = true; // Global from main.js
+        isPaused = true;
 
         // 2. Play Fanfare
-        if (sfx && sfx.playVictory) sfx.playVictory(); // Custom Victory Music
+        if (sfx && sfx.playVictory) sfx.playVictory();
 
-        // 3. Visuals - Zoom and CRT
+        // 3. Zoom out canvas
         const canvas = document.getElementById('gameCanvas');
         canvas.classList.add('game-finished');
 
-        // 4. Create DOM Elements
-        this.createDeskOverlay();
-
-        // 5. Start Dialogue
-        setTimeout(() => this.playDialogue(), 1500); // Wait for zoom
+        // 4. Simple congrats message
+        setTimeout(() => this.showCongrats(), 1500);
     }
 
-    static createDeskOverlay() {
+    static showCongrats() {
         const overlay = document.createElement('div');
-        overlay.id = 'desk-overlay';
-
-        // Main Potato Character with Fedora (cartoony)
-        const potatoDev = document.createElement('div');
-        potatoDev.id = 'potato-dev';
-        potatoDev.innerHTML = `
-            <div class="dev-head">🥔</div>
-            <div class="dev-fedora">🎩</div>
-            <div class="dev-body">👕</div>
+        overlay.id = 'ending-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s;
         `;
 
-        // Coffee
-        const coffee = document.createElement('div');
-        coffee.id = 'dev-coffee';
-        coffee.innerText = '☕';
+        const congratsBox = document.createElement('div');
+        congratsBox.style.cssText = `
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 80px;
+            border-radius: 20px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        `;
+        congratsBox.innerHTML = `
+            <h1 style="margin: 0 0 20px 0; font-size: 72px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">🎉 CONGRATULATIONS! 🎉</h1>
+            <p style="margin: 0; font-size: 32px; opacity: 0.9;">You've conquered the Mashacre!</p>
+        `;
 
-        // Keyboard
-        const keyboard = document.createElement('div');
-        keyboard.id = 'dev-keyboard';
-        keyboard.innerText = '⌨️'; // Simple emoji for now
-
-        // Dialogue Box
-        const dialogBox = document.createElement('div');
-        dialogBox.id = 'ending-dialogue';
-
-        overlay.appendChild(potatoDev);
-        overlay.appendChild(coffee);
-        overlay.appendChild(keyboard);
-        overlay.appendChild(dialogBox);
-
+        overlay.appendChild(congratsBox);
         document.body.appendChild(overlay);
 
-        // Fade in
         setTimeout(() => overlay.style.opacity = '1', 100);
     }
 
-    static async playDialogue() {
-        const lines = [
-            { text: "> BOSS_DEFEATED.LOG SAVED.", sender: "System", cls: "sys-text" },
-            { text: "> ARCHIVING RUN DATA...", sender: "System", cls: "sys-text" },
-            { text: "Alright, time to rest these mashers.", sender: "Potato", cls: "dev-text" }
-        ];
-
-        const box = document.getElementById('ending-dialogue');
-
-        for (let line of lines) {
-            box.innerHTML = `<span class="${line.cls}"><strong>${line.sender}:</strong> </span><span id="type-target"></span>`;
-            await this.typewrite(line.text, document.getElementById('type-target'));
-            await new Promise(r => setTimeout(r, 1000)); // Pause between lines
-        }
-
-        // End: No subscribe button anymore
-    }
-
-    static typewrite(text, element) {
-        return new Promise(resolve => {
-            let i = 0;
-            const interval = setInterval(() => {
-                element.innerText += text.charAt(i);
-                // Fake typing sound?
-                // if (sfx) sfx.playHover(); 
-                i++;
-                if (i >= text.length) {
-                    clearInterval(interval);
-                    resolve();
-                }
-            }, 50);
-        });
-    }
-
+    static createDeskOverlay() { /* removed */ }
+    static playDialogue() { /* removed */ }
+    static typewrite() { /* removed */ }
     static showSubscribeButton() { /* removed */ }
 }
