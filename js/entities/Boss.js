@@ -80,117 +80,288 @@ class Boss extends Enemy {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Shadow under boss
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        const s = this.size; // Size shorthand
+
+        // Shadow under boss - organic ellipse
+        ctx.fillStyle = 'rgba(0,0,0,0.25)';
         ctx.beginPath();
-        ctx.ellipse(0, this.size * 0.8, this.size * 0.9, this.size * 0.3, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, s * 0.85, s * 0.95, s * 0.28, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Body - big angry potato/chef
+        // Body - organic potato shape with bezier curves (like Player)
         const bodyColor = this.isKing ? '#8b5a30' : '#ffcccc';
+        const strokeColor = this.isKing ? '#5a3a10' : '#aa6666';
+        
         ctx.fillStyle = bodyColor;
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 4;
-        ctx.strokeStyle = this.isKing ? '#5a3a10' : '#aa6666';
+        ctx.beginPath();
+        
+        // Organic lumpy potato body - different for King vs Chef
+        if (this.isKing) {
+            // Mash King - larger, more imposing lumpy potato
+            ctx.moveTo(0, -s);
+            ctx.bezierCurveTo(s * 0.7, -s * 0.95, s * 1.05, -s * 0.4, s * 0.95, 0);
+            ctx.bezierCurveTo(s * 1.1, s * 0.5, s * 0.85, s * 0.9, s * 0.5, s * 0.95);
+            ctx.bezierCurveTo(s * 0.2, s * 1.05, -s * 0.2, s * 1.05, -s * 0.5, s * 0.95);
+            ctx.bezierCurveTo(-s * 0.85, s * 0.9, -s * 1.1, s * 0.5, -s * 0.95, 0);
+            ctx.bezierCurveTo(-s * 1.05, -s * 0.4, -s * 0.7, -s * 0.95, 0, -s);
+        } else {
+            // Chef - rounder but still organic
+            ctx.moveTo(0, -s * 0.9);
+            ctx.bezierCurveTo(s * 0.6, -s * 0.85, s * 0.95, -s * 0.35, s * 0.9, s * 0.1);
+            ctx.bezierCurveTo(s * 0.95, s * 0.55, s * 0.7, s * 0.9, s * 0.35, s * 0.95);
+            ctx.bezierCurveTo(s * 0.1, s, -s * 0.1, s, -s * 0.35, s * 0.95);
+            ctx.bezierCurveTo(-s * 0.7, s * 0.9, -s * 0.95, s * 0.55, -s * 0.9, s * 0.1);
+            ctx.bezierCurveTo(-s * 0.95, -s * 0.35, -s * 0.6, -s * 0.85, 0, -s * 0.9);
+        }
+        ctx.closePath();
+        ctx.fill();
         ctx.stroke();
 
-        // Potato texture spots (King only)
+        // Body highlight/sheen
+        ctx.fillStyle = this.isKing ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)';
+        ctx.beginPath();
+        ctx.ellipse(-s * 0.3, -s * 0.4, s * 0.35, s * 0.25, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Potato texture spots - organic blob shapes
         if (this.isKing) {
             ctx.fillStyle = '#6a4520';
-            ctx.beginPath(); ctx.arc(-30, 20, 8, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(25, -15, 6, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(10, 35, 5, 0, Math.PI * 2); ctx.fill();
+            // Spot 1
+            ctx.beginPath();
+            ctx.moveTo(-s * 0.35, s * 0.15);
+            ctx.bezierCurveTo(-s * 0.25, s * 0.08, -s * 0.18, s * 0.15, -s * 0.22, s * 0.28);
+            ctx.bezierCurveTo(-s * 0.28, s * 0.35, -s * 0.4, s * 0.28, -s * 0.35, s * 0.15);
+            ctx.fill();
+            // Spot 2
+            ctx.beginPath();
+            ctx.moveTo(s * 0.3, -s * 0.2);
+            ctx.bezierCurveTo(s * 0.38, -s * 0.28, s * 0.45, -s * 0.18, s * 0.4, -s * 0.08);
+            ctx.bezierCurveTo(s * 0.32, -s * 0.05, s * 0.25, -s * 0.12, s * 0.3, -s * 0.2);
+            ctx.fill();
+            // Spot 3
+            ctx.beginPath();
+            ctx.moveTo(s * 0.1, s * 0.45);
+            ctx.bezierCurveTo(s * 0.18, s * 0.4, s * 0.22, s * 0.48, s * 0.18, s * 0.58);
+            ctx.bezierCurveTo(s * 0.1, s * 0.62, s * 0.02, s * 0.55, s * 0.1, s * 0.45);
+            ctx.fill();
+        } else {
+            // Chef spots - reddish undertones
+            ctx.fillStyle = '#dd9999';
+            ctx.beginPath();
+            ctx.moveTo(-s * 0.4, s * 0.2);
+            ctx.bezierCurveTo(-s * 0.32, s * 0.12, -s * 0.25, s * 0.18, -s * 0.3, s * 0.32);
+            ctx.bezierCurveTo(-s * 0.38, s * 0.38, -s * 0.48, s * 0.3, -s * 0.4, s * 0.2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(s * 0.35, s * 0.35);
+            ctx.bezierCurveTo(s * 0.42, s * 0.28, s * 0.5, s * 0.35, s * 0.45, s * 0.48);
+            ctx.bezierCurveTo(s * 0.38, s * 0.52, s * 0.3, s * 0.45, s * 0.35, s * 0.35);
+            ctx.fill();
         }
 
-        // Face
+        // Face positioning
+        const faceY = -s * 0.15;
         const isSuperAngry = (bossKills >= 2);
 
-        ctx.fillStyle = isSuperAngry ? '#cc0000' : 'black';
-        ctx.beginPath(); ctx.arc(-20, -10, 8, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(20, -10, 8, 0, Math.PI * 2); ctx.fill();
+        // Eyes - expressive with highlights
+        const eyeSpacing = s * 0.28;
+        const eyeSize = s * 0.12;
+        
+        // Eye whites
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(-eyeSpacing, faceY, eyeSize, eyeSize * 1.15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(eyeSpacing, faceY, eyeSize, eyeSize * 1.15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
 
-        // VISUAL UPDATE: Angrier Face
-        if (bossKills > 0) {
-            // 2nd Chef = 0.2 (Moderate)
-            // 3rd Chef = 0.6 (Steep)
-            const baseAnger = 0.2;
-            const angerOffset = (bossKills >= 2) ? 0.4 : 0;
-            const anger = baseAnger + angerOffset;
+        // Pupils - angry red for super angry
+        ctx.fillStyle = isSuperAngry ? '#cc0000' : '#222';
+        const pupilSize = eyeSize * 0.6;
+        ctx.beginPath();
+        ctx.arc(-eyeSpacing, faceY + 2, pupilSize, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(eyeSpacing, faceY + 2, pupilSize, 0, Math.PI * 2);
+        ctx.fill();
 
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = 'black'; // Ensure eyebrows are black
+        // Eye shine
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(-eyeSpacing + 3, faceY - 2, pupilSize * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(eyeSpacing + 3, faceY - 2, pupilSize * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Angry eyebrows - scaled to boss kills
+        if (bossKills > 0 || this.isKing) {
+            const angerLevel = this.isKing ? 0.6 : (bossKills >= 2 ? 0.5 : 0.25);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = this.isKing ? '#3a2510' : '#663333';
+            ctx.lineCap = 'round';
+            
+            // Left brow - angled down toward center
             ctx.beginPath();
-            // Left Brow
-            ctx.moveTo(-28, -20); ctx.lineTo(-12, -20 + (15 * Math.sin(anger)));
-            // Right Brow
-            ctx.moveTo(28, -20); ctx.lineTo(12, -20 + (15 * Math.sin(anger)));
+            ctx.moveTo(-eyeSpacing - eyeSize, faceY - eyeSize - 5);
+            ctx.lineTo(-eyeSpacing + eyeSize * 0.5, faceY - eyeSize + (s * 0.15 * angerLevel));
+            ctx.stroke();
+            
+            // Right brow - angled down toward center
+            ctx.beginPath();
+            ctx.moveTo(eyeSpacing + eyeSize, faceY - eyeSize - 5);
+            ctx.lineTo(eyeSpacing - eyeSize * 0.5, faceY - eyeSize + (s * 0.15 * angerLevel));
             ctx.stroke();
         }
 
-        // Mouth (Only for Super Angry 3rd Chef)
-        if (isSuperAngry) {
+        // Mouth
+        const mouthY = faceY + s * 0.35;
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = this.isKing ? '#3a2510' : '#663333';
+        ctx.lineCap = 'round';
+        
+        if (isSuperAngry || this.isKing) {
+            // Angry grimace/frown
             ctx.beginPath();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = 'black';
-            // Frown: Arc from PI to 0 (top half)? No, that's a sad mouth/frown usually looks like / \ or an arc concave down.
-            // Arc: x, y, radius, startAngle, endAngle.
-            // Frown: Center (0, 15), Radius 15, Start PI + 0.5, End 2PI - 0.5?
-            ctx.arc(0, 25, 15, Math.PI + 0.5, 2 * Math.PI - 0.5);
+            ctx.moveTo(-s * 0.2, mouthY + 5);
+            ctx.quadraticCurveTo(0, mouthY - 10, s * 0.2, mouthY + 5);
             ctx.stroke();
-        }
-
-        // Crown for King - Golden potato crown
-        if (this.isKing) {
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = 'gold';
-            ctx.fillStyle = '#ffd700';
-            ctx.strokeStyle = '#daa520';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(-45, -this.size + 25);
-            ctx.lineTo(-30, -this.size - 35);
-            ctx.lineTo(-15, -this.size + 5);
-            ctx.lineTo(0, -this.size - 45);
-            ctx.lineTo(15, -this.size + 5);
-            ctx.lineTo(30, -this.size - 35);
-            ctx.lineTo(45, -this.size + 25);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            // Crown jewels
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#ff3333';
-            ctx.beginPath(); ctx.arc(0, -this.size - 25, 6, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#3366ff';
-            ctx.beginPath(); ctx.arc(-22, -this.size - 5, 4, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(22, -this.size - 5, 4, 0, Math.PI * 2); ctx.fill();
-        } else {
-            // Chef Hat - puffy and cartoony
-            ctx.fillStyle = '#ffffff';
-            ctx.strokeStyle = '#dddddd';
+            
+            // Gritted teeth lines
             ctx.lineWidth = 2;
-            // Hat base
-            ctx.fillRect(-45, -this.size - 30, 90, 45);
-            ctx.strokeRect(-45, -this.size - 30, 90, 45);
-            // Puffy top
+            for (let i = -2; i <= 2; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * s * 0.08, mouthY - 2);
+                ctx.lineTo(i * s * 0.08, mouthY + 4);
+                ctx.stroke();
+            }
+        } else {
+            // Stern line mouth
             ctx.beginPath();
-            ctx.arc(-35, -this.size - 30, 22, Math.PI, 1.5 * Math.PI);
-            ctx.arc(-10, -this.size - 55, 20, Math.PI * 1.2, Math.PI * 1.9);
-            ctx.arc(15, -this.size - 55, 20, Math.PI * 1.1, Math.PI * 1.8);
-            ctx.arc(35, -this.size - 30, 22, 1.5 * Math.PI, 0);
-            ctx.closePath();
-            ctx.fill();
+            ctx.moveTo(-s * 0.15, mouthY);
+            ctx.lineTo(s * 0.15, mouthY);
             ctx.stroke();
         }
 
-        // Visual Flash Overlay (Fixes glitchy hat removal)
+        // Crown for King - Premium golden crown with organic feel
+        if (this.isKing) {
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = 'gold';
+            
+            // Crown base gradient effect
+            const crownY = -s - 5;
+            ctx.fillStyle = '#ffd700';
+            ctx.strokeStyle = '#b8860b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(-s * 0.5, crownY + 30);
+            ctx.bezierCurveTo(-s * 0.55, crownY + 20, -s * 0.45, crownY - 20, -s * 0.35, crownY - 35);
+            ctx.bezierCurveTo(-s * 0.3, crownY - 10, -s * 0.2, crownY + 5, -s * 0.15, crownY - 5);
+            ctx.bezierCurveTo(-s * 0.08, crownY - 25, 0, crownY - 50, 0, crownY - 50);
+            ctx.bezierCurveTo(0, crownY - 50, s * 0.08, crownY - 25, s * 0.15, crownY - 5);
+            ctx.bezierCurveTo(s * 0.2, crownY + 5, s * 0.3, crownY - 10, s * 0.35, crownY - 35);
+            ctx.bezierCurveTo(s * 0.45, crownY - 20, s * 0.55, crownY + 20, s * 0.5, crownY + 30);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Crown highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(-s * 0.15, crownY, s * 0.12, s * 0.08, -0.2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Crown jewels
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'red';
+            ctx.fillStyle = '#ff3333';
+            ctx.beginPath();
+            ctx.arc(0, crownY - 35, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowColor = 'blue';
+            ctx.fillStyle = '#3366ff';
+            ctx.beginPath();
+            ctx.arc(-s * 0.25, crownY + 5, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(s * 0.25, crownY + 5, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        } else {
+            // Chef Hat - fluffy and cartoony with organic puffs
+            const hatY = -s - 10;
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            
+            // Hat base band
+            ctx.fillStyle = '#f5f5f5';
+            ctx.beginPath();
+            ctx.moveTo(-s * 0.55, hatY + 40);
+            ctx.bezierCurveTo(-s * 0.6, hatY + 30, -s * 0.55, hatY + 20, -s * 0.5, hatY + 15);
+            ctx.lineTo(s * 0.5, hatY + 15);
+            ctx.bezierCurveTo(s * 0.55, hatY + 20, s * 0.6, hatY + 30, s * 0.55, hatY + 40);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Puffy top - multiple organic cloud-like puffs
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            // Left puff
+            ctx.moveTo(-s * 0.5, hatY + 20);
+            ctx.bezierCurveTo(-s * 0.7, hatY + 10, -s * 0.65, hatY - 20, -s * 0.4, hatY - 25);
+            // Middle-left puff
+            ctx.bezierCurveTo(-s * 0.35, hatY - 45, -s * 0.15, hatY - 50, 0, hatY - 45);
+            // Middle-right puff
+            ctx.bezierCurveTo(s * 0.15, hatY - 50, s * 0.35, hatY - 45, s * 0.4, hatY - 25);
+            // Right puff
+            ctx.bezierCurveTo(s * 0.65, hatY - 20, s * 0.7, hatY + 10, s * 0.5, hatY + 20);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Puff details/shadows
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(-s * 0.25, hatY - 15, s * 0.15, Math.PI * 0.8, Math.PI * 1.8);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(s * 0.2, hatY - 20, s * 0.12, Math.PI * 0.9, Math.PI * 1.7);
+            ctx.stroke();
+        }
+
+        // Visual Flash Overlay (damage feedback)
         if (this.visualFlashTimer > 0) {
             ctx.save();
             ctx.globalAlpha = 0.7;
             ctx.fillStyle = 'white';
-            ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath();
+            if (this.isKing) {
+                ctx.moveTo(0, -s);
+                ctx.bezierCurveTo(s * 0.7, -s * 0.95, s * 1.05, -s * 0.4, s * 0.95, 0);
+                ctx.bezierCurveTo(s * 1.1, s * 0.5, s * 0.85, s * 0.9, s * 0.5, s * 0.95);
+                ctx.bezierCurveTo(s * 0.2, s * 1.05, -s * 0.2, s * 1.05, -s * 0.5, s * 0.95);
+                ctx.bezierCurveTo(-s * 0.85, s * 0.9, -s * 1.1, s * 0.5, -s * 0.95, 0);
+                ctx.bezierCurveTo(-s * 1.05, -s * 0.4, -s * 0.7, -s * 0.95, 0, -s);
+            } else {
+                ctx.moveTo(0, -s * 0.9);
+                ctx.bezierCurveTo(s * 0.6, -s * 0.85, s * 0.95, -s * 0.35, s * 0.9, s * 0.1);
+                ctx.bezierCurveTo(s * 0.95, s * 0.55, s * 0.7, s * 0.9, s * 0.35, s * 0.95);
+                ctx.bezierCurveTo(s * 0.1, s, -s * 0.1, s, -s * 0.35, s * 0.95);
+                ctx.bezierCurveTo(-s * 0.7, s * 0.9, -s * 0.95, s * 0.55, -s * 0.9, s * 0.1);
+                ctx.bezierCurveTo(-s * 0.95, -s * 0.35, -s * 0.6, -s * 0.85, 0, -s * 0.9);
+            }
+            ctx.fill();
             ctx.restore();
         }
 
