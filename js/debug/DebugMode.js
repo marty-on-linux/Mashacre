@@ -99,6 +99,12 @@
                 debugDiv.style.display = isVisible ? 'block' : 'none';
             }
         }
+        // Close password prompt with Escape
+        if (e.code === 'Escape' && passwordDiv.style.display === 'block') {
+            passwordDiv.style.display = 'none';
+            document.getElementById('dbg-pw-input').value = '';
+            document.getElementById('dbg-pw-error').style.display = 'none';
+        }
     });
 
     // Password submission
