@@ -371,6 +371,10 @@ class Boss extends Enemy {
     die() {
         if (this.isKing) {
             gameWin();
+            // Detach Pixi overlay for this boss
+            if (window.PIXI_BOSSES && typeof window.PIXI_BOSSES.detach === 'function') {
+                window.PIXI_BOSSES.detach(this);
+            }
             return;
         }
 
@@ -386,6 +390,11 @@ class Boss extends Enemy {
         bossKills++;
         super.die();
         document.getElementById('boss-bar-container').style.display = 'none';
+
+        // Detach Pixi overlay for this boss
+        if (window.PIXI_BOSSES && typeof window.PIXI_BOSSES.detach === 'function') {
+            window.PIXI_BOSSES.detach(this);
+        }
 
         // PACING UPDATE: Next boss in 3 mins OR 10 levels, whichever comes FIRST
         // But actually, "whichever comes first" implies the EARLIER of the two triggers.
@@ -454,8 +463,8 @@ class ButcherKnife {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
 
-        // VISUAL UPDATE: Red Glow (Intense)
-        ctx.shadowBlur = 40;
+        // VISUAL UPDATE: Red Glow (lighter for performance)
+        ctx.shadowBlur = 12;
         ctx.shadowColor = 'red';
 
         // Draw Knife

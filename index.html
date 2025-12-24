@@ -15,6 +15,8 @@
     <!-- Game Canvas -->
     <canvas id="gameCanvas"></canvas>
     <div id="danger-overlay"></div>
+    <!-- Pixi container overlay (optional rendering layer) -->
+    <div id="pixi-container" style="position:fixed; inset:0; pointer-events:none; z-index:1000;"></div>
 
     <!-- UI Overlay -->
     <div id="ui-layer">
@@ -120,6 +122,11 @@
     <script src="js/managers/EndingManager.js"></script>
     <script src="js/debug/DebugMode.js"></script>
     <script src="js/debug/DebugWeaponTools.js"></script>
+    <!-- PixiJS CDN and setup -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.3.1/dist/pixi.min.js" integrity="sha384-FallbackHash" crossorigin="anonymous"></script>
+    <script src="js/PixiSetup.js"></script>
+    <script src="js/managers/PixiTextureFactory.js"></script>
+    <script src="js/managers/PixiBossRenderer.js"></script>
 </body>
 
 </html>

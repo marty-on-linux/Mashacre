@@ -170,6 +170,17 @@ class MashKing extends Boss {
             } else {
                 const s = this.size;
 
+                // Royal cape with organic curves (behind body)
+                ctx.fillStyle = '#8B0000';
+                ctx.strokeStyle = '#5A0000';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(-s * 0.9, -s * 0.1);
+                ctx.bezierCurveTo(-s * 1.0, s * 0.6, -s * 0.4, s * 1.6, 0, s * 1.25);
+                ctx.bezierCurveTo(s * 0.4, s * 1.6, s * 1.0, s * 0.6, s * 0.9, -s * 0.1);
+                ctx.lineTo(-s * 0.9, -s * 0.1);
+                ctx.fill(); ctx.stroke();
+
                 // Aura rings (subtle, no shadowBlur)
                 ctx.globalAlpha = 0.08;
                 ctx.fillStyle = '#FFD700';
@@ -178,45 +189,51 @@ class MashKing extends Boss {
                 }
                 ctx.globalAlpha = 1;
 
-                // Smooth king body (less bumpy)
+                // Lumpy king potato body (organic bezier)
                 ctx.fillStyle = '#CD853F';
                 ctx.strokeStyle = '#8B4513';
                 ctx.lineWidth = 5;
                 ctx.beginPath();
-                ctx.ellipse(0, -s * 0.05, s * 0.95, s * 0.98, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
+                ctx.moveTo(0, -s);
+                ctx.bezierCurveTo(s * 0.7, -s * 0.95, s * 1.05, -s * 0.4, s * 0.95, 0);
+                ctx.bezierCurveTo(s * 1.1, s * 0.5, s * 0.85, s * 0.9, s * 0.5, s * 0.95);
+                ctx.bezierCurveTo(s * 0.2, s * 1.05, -s * 0.2, s * 1.05, -s * 0.5, s * 0.95);
+                ctx.bezierCurveTo(-s * 0.85, s * 0.9, -s * 1.1, s * 0.5, -s * 0.95, 0);
+                ctx.bezierCurveTo(-s * 1.05, -s * 0.4, -s * 0.7, -s * 0.95, 0, -s);
+                ctx.fill(); ctx.stroke();
 
                 // Face (Angry King with highlights)
-                const faceY = -s * 0.12;
+                const faceY = -s * 0.15;
                 ctx.fillStyle = 'white';
-                ctx.beginPath(); ctx.ellipse(-s * 0.26, faceY, s * 0.12, s * 0.14, 0, 0, Math.PI * 2); ctx.fill();
-                ctx.beginPath(); ctx.ellipse(s * 0.26, faceY, s * 0.12, s * 0.14, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(-s * 0.28, faceY, s * 0.12, s * 0.14, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(s * 0.28, faceY, s * 0.12, s * 0.14, 0, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#222';
-                ctx.beginPath(); ctx.arc(-s * 0.26, faceY + 2, s * 0.06, 0, Math.PI * 2); ctx.fill();
-                ctx.beginPath(); ctx.arc(s * 0.26, faceY + 2, s * 0.06, 0, Math.PI * 2); ctx.fill();
-
-                // Eyebrows above eyes
-                ctx.strokeStyle = '#3a2510';
-                ctx.lineWidth = 6;
+                ctx.beginPath(); ctx.arc(-s * 0.28, faceY + 2, s * 0.06, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(s * 0.28, faceY + 2, s * 0.06, 0, Math.PI * 2); ctx.fill();
+                
+                // Angry Eyebrows - thick and angled down toward center
+                ctx.strokeStyle = '#3a2510'; 
+                ctx.lineWidth = 6; 
                 ctx.lineCap = 'round';
-                ctx.beginPath();
-                ctx.moveTo(-s * 0.42, faceY - s * 0.2);
-                ctx.lineTo(-s * 0.16, faceY - s * 0.1);
+                // Left brow - angled down inward
+                ctx.beginPath(); 
+                ctx.moveTo(-s * 0.42, faceY - s * 0.18); 
+                ctx.lineTo(-s * 0.18, faceY - s * 0.08); 
                 ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(s * 0.42, faceY - s * 0.2);
-                ctx.lineTo(s * 0.16, faceY - s * 0.1);
+                // Right brow - angled down inward
+                ctx.beginPath(); 
+                ctx.moveTo(s * 0.42, faceY - s * 0.18); 
+                ctx.lineTo(s * 0.18, faceY - s * 0.08); 
                 ctx.stroke();
-
-                // Mouth (simple frown)
+                
+                // Angry Mouth - frown
                 ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(-s * 0.18, faceY + s * 0.32);
-                ctx.quadraticCurveTo(0, faceY + s * 0.42, s * 0.18, faceY + s * 0.32);
+                ctx.beginPath(); 
+                ctx.moveTo(-s * 0.18, faceY + s * 0.32); 
+                ctx.quadraticCurveTo(0, faceY + s * 0.42, s * 0.18, faceY + s * 0.32); 
                 ctx.stroke();
 
-                // Premium crown - clean fit on top of head
+                // Premium crown - sitting properly on top of head
                 ctx.fillStyle = '#ffd700';
                 ctx.strokeStyle = '#b8860b';
                 ctx.lineWidth = 3;
@@ -230,13 +247,12 @@ class MashKing extends Boss {
                 ctx.bezierCurveTo(s * 0.15, cy + 5, s * 0.25, cy - 5, s * 0.3, cy - 25);
                 ctx.bezierCurveTo(s * 0.4, cy - 15, s * 0.5, cy + 10, s * 0.45, cy + 20);
                 ctx.closePath();
-                ctx.fill();
-                ctx.stroke();
-
+                ctx.fill(); ctx.stroke();
+                
                 // Crown jewels
-                ctx.fillStyle = '#ff3333';
+                ctx.fillStyle = '#ff3333'; 
                 ctx.beginPath(); ctx.arc(0, cy - 28, 7, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#3366ff';
+                ctx.fillStyle = '#3366ff'; 
                 ctx.beginPath(); ctx.arc(-s * 0.2, cy + 5, 5, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(s * 0.2, cy + 5, 5, 0, Math.PI * 2); ctx.fill();
             }

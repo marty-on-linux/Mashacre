@@ -159,6 +159,11 @@ function spawnBoss(isKing = false) {
     enemies.push(boss);
     activeBoss = boss;
 
+    // Attach Pixi overlay for boss visuals
+    if (window.PIXI_BOSSES && typeof window.PIXI_BOSSES.attach === 'function') {
+        window.PIXI_BOSSES.attach(boss);
+    }
+
     document.getElementById('boss-text').innerText = boss.name;
     document.getElementById('boss-bar-container').style.display = 'block';
 
@@ -206,6 +211,7 @@ function loop(timestamp) {
 
     // Delta time for consistent game speed regardless of frame rate
     const deltaTime = Math.min((timestamp - lastTime) / 1000, 0.1); // Cap at 100ms to prevent spiral of death
+    const frameMs = deltaTime * 1000;
     lastTime = timestamp;
     gameTime += deltaTime;
     frameCount++;
@@ -219,6 +225,10 @@ function loop(timestamp) {
             const by = player.y + Math.sin(angle) * dist;
             activeBoss = new MashKing(bx, by);
             enemies.push(activeBoss);
+
+            if (window.PIXI_BOSSES && typeof window.PIXI_BOSSES.attach === 'function') {
+                window.PIXI_BOSSES.attach(activeBoss);
+            }
 
             sfx.playBoss();
             document.getElementById('boss-bar-container').style.display = 'block';
@@ -268,10 +278,14 @@ function loop(timestamp) {
         }
     }
 
-    // --- Performance Caps (using length assignment is faster than splice) ---
-    if (particles.length > 150) particles.length = 150;
-    if (splats.length > 200) splats.length = 200;
-    if (damageNumbers.length > 50) damageNumbers.length = 50;
+    // --- Performance Caps (adaptive; using length assignment is faster than splice) ---
+    const lowPerf = frameMs > 24; // ~ < 42 FPS threshold
+    const PARTICLE_CAP = lowPerf ? 90 : 150;
+    const SPLAT_CAP = lowPerf ? 150 : 200;
+    const DMG_CAP = lowPerf ? 35 : 50;
+    if (particles.length > PARTICLE_CAP) particles.length = PARTICLE_CAP;
+    if (splats.length > SPLAT_CAP) splats.length = SPLAT_CAP;
+    if (damageNumbers.length > DMG_CAP) damageNumbers.length = DMG_CAP;
 
     // Update Mouse World Position (Logic maintained but using global mouse from Input.js)
     if (mouse) {
@@ -344,22 +358,48 @@ function loop(timestamp) {
 
     drawBackground(ctx);
 
-    splats.forEach(s => s.draw(ctx));
-    mines.forEach(m => m.draw(ctx));
+    // Sync Pixi boss overlays to camera before draws
+    if (window.PIXI_BOSSES && typeof window.PIXI_BOSSES.updateAll === 'function') {
+        window.PIXI_BOSSES.updateAll();
+    }
+
+    // Visible world bounds for culling
+    const margin = 300;
+    const viewLeft = camera.x - cx - margin;
+    const viewRight = camera.x + cx + margin;
+    const viewTop = camera.y - cy - margin;
+    const viewBottom = camera.y + cy + margin;
+    const isInView = (x, y, r = 20) => (x + r >= viewLeft && x - r <= viewRight && y + r >= viewTop && y - r <= viewBottom);
+
+    // Draw with culling to reduce per-frame work
+    splats.forEach(s => { if (isInView(s.x, s.y, 50)) s.draw(ctx); });
+    mines.forEach(m => { if (isInView(m.x, m.y, 40)) m.draw(ctx); });
     if (typeof gemManager !== 'undefined') {
+        // GemManager handles its own culling internally if available
         gemManager.draw(ctx);
     } else {
-        gems.forEach(g => g.draw(ctx));
+        gems.forEach(g => { if (isInView(g.x, g.y, 20)) g.draw(ctx); });
     }
-    pickups.forEach(p => p.draw(ctx));
-    projectiles.forEach(p => p.draw(ctx));
-    enemyProjectiles.forEach(p => p.draw(ctx));
+    pickups.forEach(p => { const r = p.size || 25; if (isInView(p.x, p.y, r)) p.draw(ctx); });
+    projectiles.forEach(p => { const r = p.size || 12; if (isInView(p.x, p.y, r)) p.draw(ctx); });
+    enemyProjectiles.forEach(p => { const r = p.size || 14; if (isInView(p.x, p.y, r)) p.draw(ctx); });
     player.draw(ctx);
 
-    enemies.sort((a, b) => (a.type === 'boss' ? 1 : -1));
-    enemies.forEach(e => e.draw(ctx));
-    particles.forEach(p => p.draw(ctx));
-    damageNumbers.forEach(d => d.draw(ctx));
+    // Draw enemies without per-frame sort (two passes: non-boss, then boss)
+    for (let i = 0; i < enemies.length; i++) {
+        const e = enemies[i];
+        if (e.type === 'boss') continue;
+        const r = e.size || 20;
+        if (isInView(e.x, e.y, r)) e.draw(ctx);
+    }
+    for (let i = 0; i < enemies.length; i++) {
+        const e = enemies[i];
+        if (e.type !== 'boss') continue;
+        const r = e.size || 30;
+        if (isInView(e.x, e.y, r)) e.draw(ctx);
+    }
+    particles.forEach(p => { const r = p.size || 16; if (isInView(p.x ?? player.x, p.y ?? player.y, r)) p.draw(ctx); });
+    damageNumbers.forEach(d => { if (isInView(d.x, d.y, 10)) d.draw(ctx); });
 
     ctx.restore();
 
